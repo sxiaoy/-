@@ -1,3 +1,5 @@
+import time
+
 from DataBase.models import *
 from Utils.tools import *
 from Utils.network import *
@@ -222,8 +224,10 @@ def get_img(request):
     :return:
     """
     request = post_request(request)
-    img_type = int(request['type'])
-    if img_type == 0:
+    img_type = request['type']
+    img_type = img_type if img_type != "free" else "1"
+    print(img_type)
+    if img_type == 'all':
         img_list = Image.objects.filter().order_by('-image_time')
     else:
         img_list = Image.objects.filter(image_type=img_type).order_by('-image_time')
@@ -246,7 +250,7 @@ def load_img(request):
     file.write(picture)
     file.close()
     compress_image('static/image/{}.jpg'.format(img_name), 'static/image/{}.jpg'.format(img_name), 90)
-    img_add = 'https://www.sxiaoy.cn/static/image/{}.jpg'.format(img_name)
+    img_add = add_address() + '/static/image/{}.jpg'.format(img_name)
     image = Image(image_type=int(request['type']), image_add=img_add)
     image.save()
     img = model_to_dict(image)
@@ -346,6 +350,6 @@ def zip_img(request):
         image = f.read()
     img_base64 = str(base64.b64encode(image), encoding='utf-8')
     return success(data={
-        'img_url': 'https://www.sxiaoy.cn/static/temporary/{}.jpg'.format(img_path),
+        'img_url': add_address() + '/static/temporary/{}.jpg'.format(img_path),
         'img_base64': img_base64
     })

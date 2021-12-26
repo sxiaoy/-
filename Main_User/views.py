@@ -1,3 +1,5 @@
+import time
+
 from Utils.tools import *
 from Utils.network import *
 from DataBase.models import *
@@ -13,6 +15,7 @@ def login(request):
 
 
 def test(request):
+    time.sleep(60)
     print(request.headers)
     return success(data={"aa": "bb"})
 

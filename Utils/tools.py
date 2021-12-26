@@ -45,6 +45,13 @@ def random_random(length, is_large=[], is_small=[], is_number=[]):
     return random_str
 
 
+def add_address():
+    if is_system():
+        return "http://127.0.0.1:8000"
+    else:
+        return "https://www.sxiaoy.cn"
+
+
 class HttpCode(object):
     success = 200
     fail = 400
